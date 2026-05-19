@@ -1,0 +1,8 @@
+services:
+  frontend:
+    image: nginx:trixie
+    volumes:
+      - "./frontend" : "/usr/share/nginx/www"
+    ports:
+      - 8080:80
+    
