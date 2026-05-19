@@ -4,29 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de votación mascota facultad de ingeniería</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <form action="" method="post">
+    <!-- 1. Corregido: Se pasa el evento y se ejecuta la función con () -->
+    <form action="" method="post" onsubmit="return validar(event)">
         <label for="code"> Código estudiante: </label>
-        <input type="text" name="code" id="code">
+        <input type="text" name="code" id="code" required>
 
         <fieldset>
-            <legend>escoja un candidato: </legend>
-            <label for="c01"> candidato 01</label>
-            <input type="radio" name="candidato" id="c01">
-            <label for="c01"> candidato 02</label>
-            <input type="radio" name="candidato" id="c02">
-            <label for="c01"> candidato 03</label>
-            <input type="radio" name="candidato" id="c03">
+            <legend>Escoja un candidato: </legend>
+            <div>
+                <label for="c01">Candidato 01</label>
+                <img src="img/Copilot_20260519_165845.png" style="height: 200px;" alt="">
+                <!-- 2. Agregado: value="Candidato 01" -->
+                <input type="radio" name="candidato" id="c01" value="Candidato 01">
+            </div>
+            <div>
+                <!-- Corregido el 'for' para que apunte a c02 -->
+                <label for="c02">Candidato 02</label>
+                <img src="img/Copilot_20260519_165852.png" style="height: 200px;" alt="">
+                <!-- 2. Agregado: value="Candidato 02" -->
+                <input type="radio" name="candidato" id="c02" value="Candidato 02">
+            </div>
+            <div>
+                <!-- Corregido el 'for' para que apunte a c03 -->
+                <label for="c03">Candidato 03</label>
+                <img src="img/Copilot_20260519_170101.png" style="height: 200px;" alt="">
+                <!-- 2. Agregado: value="Candidato 03" -->
+                <input type="radio" name="candidato" id="c03" value="Candidato 03">
+            </div>
         </fieldset>
 
-        <input type="button" value="votar">
-
+        <!-- 3. Corregido: Cambiado a type="submit" para que dispare el onsubmit del formulario -->
+        <input type="submit" value="votar">
     </form>
-    
+
+    <script>
+        function validar(event) {
+            // Evita que la página se recargue inmediatamente para poder ver el console.log
+            event.preventDefault(); 
+
+            // Busca el radio button que esté seleccionado (checked) dentro del grupo 'candidato'
+            const seleccionado = document.querySelector('input[name="candidato"]:checked');
+
+            if (seleccionado) {
+                // Si hay uno seleccionado, accedemos a su atributo value
+                console.log(`Voto emitido para: ${seleccionado.value}`);
+                
+                // Aquí puedes continuar con el envío real si lo deseas:
+                // event.target.submit();
+                return true;
+            } else {
+                console.log("No se seleccionó ningún candidato.");
+                alert("Por favor, selecciona un candidato antes de votar.");
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>
