@@ -1,8 +1,15 @@
 services:
   frontend:
     image: nginx:trixie
-    volumes:
-      - "./frontend" : "/usr/share/nginx/www"
+    dns:
+      -8.8.8.8
+      -1.1.1.1
     ports:
       - 8080:80
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+  backend:
+    image: busybox
+  db:
+    image: busybox
     
