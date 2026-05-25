@@ -1,0 +1,221 @@
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.contenedor-principal {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+}
+
+.subtitulo {
+    color: #666;
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+}
+
+.card-form {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 24px;
+}
+
+.campo-codigo label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.campo-codigo input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.campo-codigo input:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.candidatos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.candidato-card {
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafafa;
+}
+
+.candidato-card:hover {
+    border-color: #4a90e2;
+    box-shadow: 0 2px 8px rgba(74,144,226,0.15);
+}
+
+.candidato-card input[type="radio"] {
+    display: none;
+}
+
+.candidato-card.seleccionado {
+    border-color: #4a90e2;
+    background: #eef4fd;
+    box-shadow: 0 2px 8px rgba(74,144,226,0.2);
+}
+
+.candidato-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.candidato-card .nombre {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.acciones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-votar {
+    background-color: #1a1a2e;
+    color: white;
+    border: none;
+    padding: 11px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-votar:hover {
+    background-color: #2d2d4e;
+}
+
+.btn-resultados {
+    background-color: #fff;
+    color: #1a1a2e;
+    border: 2px solid #1a1a2e;
+    padding: 11px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-resultados:hover {
+    background-color: #1a1a2e;
+    color: #fff;
+}
+
+#mensaje {
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 0.97rem;
+    min-height: 24px;
+}
+
+#panel-resultados {
+    display: none;
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+#panel-resultados h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1a1a2e;
+}
+
+.resultados-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.resultado-card {
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    background: #fafafa;
+}
+
+.resultado-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.resultado-card .nombre-res {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.resultado-card .votos-num {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4a90e2;
+    line-height: 1;
+}
+
+.resultado-card .votos-label {
+    font-size: 0.78rem;
+    color: #999;
+    margin-top: 2px;
+}
+
+.barra-contenedor {
+    background: #eee;
+    border-radius: 4px;
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.barra {
+    height: 100%;
+    background: #4a90e2;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+@media (max-width: 600px) {
+    .candidatos-grid, .resultados-grid {
+        grid-template-columns: 1fr;
+    }
+}

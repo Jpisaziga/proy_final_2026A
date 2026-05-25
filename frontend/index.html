@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de votación - Mascota Facultad de Ingeniería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1>🐾 Elige la mascota de Ingeniería USB Cali</h1>
+        <p class="subtitulo">Usa tu código estudiantil para emitir tu voto. Solo se permite un voto por código.</p>
+
+        <div class="card-form">
+            <form action="" method="post" onsubmit="return validar(event)">
+                <div class="campo-codigo">
+                    <label for="code">Código estudiantil</label>
+                    <input type="text" name="code" id="code" placeholder="Ej: 3000012345" required>
+                </div>
+
+                <fieldset style="border:none; padding:0; margin-top: 20px;">
+                    <legend style="font-weight:600; margin-bottom:12px;">Selecciona un candidato:</legend>
+                    <div class="candidatos-grid">
+                        <label class="candidato-card" for="c01">
+                            <input type="radio" name="candidato" id="c01" value="1">
+                            <img src="img/Copilot_20260519_165845.png" alt="Candidato 01">
+                            <div class="nombre">Candidato 01</div>
+                        </label>
+                        <label class="candidato-card" for="c02">
+                            <input type="radio" name="candidato" id="c02" value="2">
+                            <img src="img/Copilot_20260519_165852.png" alt="Candidato 02">
+                            <div class="nombre">Candidato 02</div>
+                        </label>
+                        <label class="candidato-card" for="c03">
+                            <input type="radio" name="candidato" id="c03" value="3">
+                            <img src="img/Copilot_20260519_170101.png" alt="Candidato 03">
+                            <div class="nombre">Candidato 03</div>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="acciones">
+                    <button type="submit" class="btn-votar">Votar</button>
+                    <button type="button" class="btn-resultados" onclick="verResultados()">Ver resultados</button>
+                </div>
+
+                <p id="mensaje"></p>
+            </form>
+        </div>
+
+        <div id="panel-resultados">
+            <h2>📊 Resultados actuales</h2>
+            <div class="resultados-grid" id="resultados-contenido"></div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.candidato-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.candidato-card').forEach(c => c.classList.remove('seleccionado'));
+                card.classList.add('seleccionado');
+            });
+        });
+
+        async function validar(event) {
+            event.preventDefault();
+            const codigo = document.getElementById("code").value.trim();
+            const seleccionado = document.querySelector('input[name="candidato"]:checked');
+            const msg = document.getElementById("mensaje");
+
+            if (!codigo.startsWith("30000") || !/^\d{10,}$/.test(codigo)) {
+                msg.textContent = "❌ Código inválido. Los códigos USB comienzan con 30000.";
+                msg.style.color = "#c0392b";
+                return false;
+            }
+            if (!seleccionado) {
+                msg.textContent = "❌ Por favor selecciona un candidato.";
+                msg.style.color = "#c0392b";
+                return false;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/votar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ codigo: codigo, candidato_id: seleccionado.value })
+                });
+                const result = await response.json();
+                msg.textContent = result.exito ? "✅ " + result.mensaje : "❌ " + result.mensaje;
+                msg.style.color = result.exito ? "#27ae60" : "#c0392b";
+            } catch (error) {
+                msg.textContent = "❌ Error de conexión con el servidor.";
+                msg.style.color = "#c0392b";
+            }
+        }
+
+        async function verResultados() {
+            const panel = document.getElementById("panel-resultados");
+            const contenido = document.getElementById("resultados-contenido");
+            const imagenes = {
+                "Candidato 01": "img/Copilot_20260519_165845.png",
+                "Candidato 02": "img/Copilot_20260519_165852.png",
+                "Candidato 03": "img/Copilot_20260519_170101.png"
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/resultados");
+                const data = await response.json();
+                const totalVotos = data.reduce((sum, r) => sum + r.votos, 0);
+
+                contenido.innerHTML = data.map(r => {
+                    const porcentaje = totalVotos > 0 ? Math.round((r.votos / totalVotos) * 100) : 0;
+                    return `
+                        <div class="resultado-card">
+                            <img src="${imagenes[r.candidato]}" alt="${r.candidato}">
+                            <div class="nombre-res">${r.candidato}</div>
+                            <div class="votos-num">${r.votos}</div>
+                            <div class="votos-label">votos (${porcentaje}%)</div>
+                            <div class="barra-contenedor">
+                                <div class="barra" style="width: ${porcentaje}%"></div>
+                            </div>
+                        </div>`;
+                }).join("");
+
+                panel.style.display = "block";
+                panel.scrollIntoView({ behavior: "smooth" });
+            } catch (error) {
+                alert("No se pudieron cargar los resultados.");
+            }
+        }
+    </script>
+</body>
+</html>
