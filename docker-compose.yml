@@ -1,5 +1,6 @@
 services:
   frontend:
+<<<<<<< HEAD
     image: nginx:alpine
     ports:
       - "8080:80"
@@ -40,3 +41,18 @@ services:
 
 volumes:
   pgdata:
+=======
+    image: nginx:trixie
+    dns:
+      -8.8.8.8
+      -1.1.1.1
+    ports:
+      - 8080:80
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+  backend:
+    image: busybox
+  db:
+    image: busybox
+    
+>>>>>>> f17735bcf142435f7f1c560ed288a5a63b965d35
